@@ -99,7 +99,10 @@ func (b *Exporter) handleEvent(thisEvent event.Event) {
 	// labels on the event will override the global labels
 	var prometheusLabels prometheus.Labels
 	if b.Mapper.Defaults.GlobalLabels != nil {
-		prometheusLabels = b.Mapper.Defaults.GlobalLabels
+		prometheusLabels = make(map[string]string)
+		for k, v := range b.Mapper.Defaults.GlobalLabels {
+			prometheusLabels[k] = v
+		}
 		for k, v := range thisEvent.Labels() {
 			prometheusLabels[k] = v
 		}
